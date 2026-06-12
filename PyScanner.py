@@ -117,7 +117,7 @@ def scan_host(ip_range):
 local_ip = socket.gethostbyname(socket.gethostname())
 ip_parts = local_ip.split(".")
 Port1 = 1
-Port2 = 1000
+Port2 = 65535
 down_hosts = []
 alive_hosts = 0
 threads = []
