@@ -1,6 +1,15 @@
 # PyScanner 🔍
 
-A powerful network scanner built in Python, inspired by nmap. PyScanner automatically detects your local network and scans all devices for open ports, services, OS, hostname, MAC address, and vendor information.
+```
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░  p y s c a n n e r          ░
+░  network recon · python      ░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+```
+
+A network scanner built in Python, inspired by nmap. PyScanner automatically detects your local network and scans all devices — open ports, services, OS fingerprinting, hostnames, MAC addresses, vendor info, and firewall detection.
+
+Built by a cyber-anarchist who thinks security tools should be honest about what they do and who they serve.
 
 ---
 
@@ -8,17 +17,17 @@ A powerful network scanner built in Python, inspired by nmap. PyScanner automati
 
 - **Auto network detection** — no need to enter your IP range manually
 - **Host discovery** — pings all 254 hosts on your subnet
-- **Port scanning** — scans ports with multi-threading for speed
-- **Service detection** — identifies services running on open ports
+- **Port scanning** — multi-threaded TCP scanning for speed
+- **Service detection** — identifies services on open ports
 - **Banner grabbing** — reads service banners where available
-- **OS fingerprinting** — guesses the OS via TTL analysis
-- **Hostname resolution** — resolves hostnames via reverse DNS
-- **MAC address lookup** — reads MAC addresses from the ARP table
-- **Vendor lookup** — identifies device manufacturers via MAC address API
+- **OS fingerprinting** — guesses OS via TTL analysis
+- **Hostname resolution** — reverse DNS lookup
+- **MAC address lookup** — reads from `/proc/net/arp`
+- **Vendor lookup** — identifies manufacturers via MAC API
 - **Firewall detection** — detects filtered ports and summarizes them
-- **Progress bar** — shows scan progress in real time
-- **Colored output** — green for open ports, red for filtered
-- **Ctrl+C support** — gracefully interrupts the scan
+- **Progress bar** — real-time scan progress
+- **Colored output** — green for open, red for filtered
+- **Ctrl+C support** — graceful interrupt
 
 ---
 
@@ -26,7 +35,7 @@ A powerful network scanner built in Python, inspired by nmap. PyScanner automati
 
 - Python 3.x
 - Linux (uses `/proc/net/arp` for MAC lookup)
-- Internet connection (for vendor lookup via `api.macvendors.com`)
+- Internet connection (vendor lookup via `api.macvendors.com`)
 
 ---
 
@@ -36,7 +45,7 @@ A powerful network scanner built in Python, inspired by nmap. PyScanner automati
 python3 PyScanner.py
 ```
 
-The scanner will automatically detect your network and begin scanning. No arguments needed.
+No arguments needed. The scanner detects your network automatically and starts scanning.
 
 ---
 
@@ -57,6 +66,9 @@ Scan has begun...
 192.168.1.105 - myphone - Linux/Mac - ff:ee:dd:cc:bb:aa - Apple, Inc.
   146 ports filtered
 
+192.168.1.202 - unknown - Network Device - 18:69:d8:xx:xx:xx - Tuya Smart Inc.
+  42 ports filtered
+
 [██████████████████████████████████████████████████] 100%
 Scan has ended...
 
@@ -69,11 +81,11 @@ The scan took 62 seconds
 ## How It Works
 
 1. Detects your local IP automatically using `socket`
-2. Pings each host in the `/24 subnet using `os.system`
-3. For alive hosts, grabs TTL from ping output to guess OS
+2. Pings each host in the `/24` subnet via `os.system`
+3. Grabs TTL from ping output to fingerprint OS
 4. Reads `/proc/net/arp` for MAC addresses
 5. Looks up vendor from `api.macvendors.com`
-6. Scans ports 1-1000 using threaded TCP sockets
+6. Scans ports using threaded TCP sockets
 7. Attempts banner grabbing on open ports
 8. Detects filtered ports via `socket.timeout`
 9. Prints grouped results per host with colors
@@ -83,18 +95,18 @@ The scan took 62 seconds
 ## Limitations
 
 - MAC vendor lookup may be rate-limited by the free API
-- OS detection via TTL is not 100% accurate
-- Linux only (uses `/proc/net/arp`)
+- OS detection via TTL is approximate, not definitive
+- Linux only
 - Your own machine's MAC may show as `unknown`
 
 ---
 
 ## Legal Notice
 
-Only use PyScanner on networks you own or have explicit permission to scan. Unauthorized network scanning may be illegal in your country.
+Only use PyScanner on networks you own or have explicit permission to scan. Unauthorized network scanning may be illegal in your jurisdiction. Security without consent is surveillance.
 
 ---
 
 ## Author
 
-Made by [SagiHacky](https://github.com/SagiHacky)
+Made by [SagiHacky](https://github.com/SagiHacky) · they/them · cyber-anarchist · `@legolymas:matrix.org`
